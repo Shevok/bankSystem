@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Date;
 import java.util.List;
 
@@ -28,7 +29,8 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
 
     @Override
     public ExchangeRate getOneById(Long id) {
-        ExchangeRate exchangeRate = exchangeRateRepository.getOne(id);
+        ExchangeRate exchangeRate = exchangeRateRepository.findById(id)
+                .orElseThrow(()-> new EntityNotFoundException("Entity with id " + id + " not found"));
         log.info("Exchange rate has been found");
         return exchangeRate;
     }

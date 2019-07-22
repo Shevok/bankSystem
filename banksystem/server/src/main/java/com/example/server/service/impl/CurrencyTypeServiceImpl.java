@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Slf4j
@@ -27,7 +28,9 @@ public class CurrencyTypeServiceImpl implements CurrencyTypeService {
 
     @Override
     public CurrencyType getOneByCode(Long code) {
-        CurrencyType createdCurrencyType = currencyTypeRepository.getOne(code);
+        CurrencyType createdCurrencyType = currencyTypeRepository.findById(code)
+                .orElseThrow(()-> new EntityNotFoundException("Entity with code " + code + " not found"));
+        ;
         log.info("Currency type has been found");
         return createdCurrencyType;
     }
